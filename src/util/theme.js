@@ -27,7 +27,7 @@ export default {
       position: "absolute"
     },
     customError: {
-      color: "red",
+      color: "#f44336",
       fontSize: "0.8rem",
       marginTop: 10
     }
