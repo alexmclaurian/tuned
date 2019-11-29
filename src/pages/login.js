@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import AppIcon from "../images/icon2.png";
-import axios from "axios";
 import { Link } from "react-router-dom";
 // MUI Stuff
 import Grid from "@material-ui/core/Grid";
@@ -14,9 +13,9 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { connect } from "react-redux";
 import { loginUser } from "../redux/actions/userActions";
 
-const styles = theme => ({
-  ...theme.stylings
-});
+import styles from "../util/theme";
+
+const stylings = styles.stylings;
 
 class login extends Component {
   constructor() {
@@ -27,7 +26,11 @@ class login extends Component {
       errors: {}
     };
   }
-
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.UI.errors) {
+      this.setState({ errors: nextProps.UI.errors });
+    }
+  }
   handleSubmit = event => {
     event.preventDefault();
     const userData = {
@@ -43,6 +46,7 @@ class login extends Component {
   };
 
   render() {
+    // console.log(stylings);
     const {
       classes,
       UI: { loading }
@@ -134,4 +138,4 @@ const mapActionsToProps = {
 export default connect(
   mapStateToProps,
   mapActionsToProps
-)(withStyles(styles)(login));
+)(withStyles(stylings)(login));

@@ -3,6 +3,7 @@ import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 
 import Tune from "../components/Tune";
+import Profile from "../components/Profile";
 
 class home extends Component {
   state = {
@@ -12,7 +13,7 @@ class home extends Component {
     axios
       .get("/tunes")
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         this.setState({
           tunes: res.data
         });
@@ -31,7 +32,7 @@ class home extends Component {
           {recentTunes}
         </Grid>
         <Grid item sm={4} xs={12}>
-          <p>Profile...</p>
+          <Profile />
         </Grid>
       </Grid>
     );
