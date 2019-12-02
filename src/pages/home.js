@@ -14,7 +14,6 @@ class home extends Component {
   }
   render() {
     const { tunes, loading } = this.props.data;
-    console.log("home ", this.props);
     let recentTunes = !loading ? (
       tunes.map(tune => <Tune key={tune.tuneId} tune={tune} />)
     ) : (

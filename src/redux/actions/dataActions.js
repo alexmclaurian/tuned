@@ -77,7 +77,6 @@ export const unlikeTune = tuneId => dispatch => {
   axios
     .get(`/tune/${tuneId}/unlike`)
     .then(res => {
-      console.log("likeTune payload: ", res.data);
       dispatch({
         type: UNLIKE_TUNE,
         payload: res.data
