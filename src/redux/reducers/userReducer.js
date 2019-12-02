@@ -1,10 +1,12 @@
 import {
   SET_USER,
-  SET_ERRORS,
-  CLEAR_ERRORS,
+  // SET_ERRORS,
+  // CLEAR_ERRORS,
   LOADING_USER,
   SET_AUTHENTICATED,
-  SET_UNAUTHENTICATED
+  SET_UNAUTHENTICATED,
+  LIKE_TUNE,
+  UNLIKE_TUNE
 } from "../types";
 
 const initialState = {
@@ -33,6 +35,22 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case LIKE_TUNE:
+      return {
+        ...state,
+        likes: [
+          ...state.likes,
+          {
+            userName: state.credentials.userName,
+            tuneId: action.payload.tuneId
+          }
+        ]
+      };
+    case UNLIKE_TUNE:
+      return {
+        ...state,
+        likes: state.likes.filter(like => like.tuneId !== action.payload.tuneId)
       };
     default:
       return state;

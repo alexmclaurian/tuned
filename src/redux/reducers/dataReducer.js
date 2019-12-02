@@ -1,4 +1,13 @@
-import { SET_TUNES, LIKE_TUNE, UNLIKE_TUNE, LOADING_DATA } from "../types";
+import {
+  SET_TUNES,
+  LIKE_TUNE,
+  UNLIKE_TUNE,
+  LOADING_DATA,
+  DELETE_TUNE,
+  POST_TUNE,
+  SET_TUNE,
+  SUBMIT_COMMENT
+} from "../types";
 
 const initialState = {
   tunes: [],
@@ -6,8 +15,8 @@ const initialState = {
   loading: false
 };
 
-export default function(state = initialState, actions) {
-  switch (actions.type) {
+export default function(state = initialState, action) {
+  switch (action.type) {
     case LOADING_DATA:
       return {
         ...state,
@@ -16,8 +25,56 @@ export default function(state = initialState, actions) {
     case SET_TUNES:
       return {
         ...state,
-        tunes: actions.payload,
+        tunes: action.payload,
         loading: false
+      };
+    case SET_TUNE:
+      return {
+        ...state,
+        tune: action.payload
+      };
+    case LIKE_TUNE:
+    case UNLIKE_TUNE:
+      let index = state.tunes.findIndex(
+        tune => tune.tuneId === action.payload.tuneId
+      );
+      state.tunes[index] = action.payload;
+      let likes = state.tune.likeCount;
+      if (state.tune.tuneId === action.payload.tuneId) {
+        // state.tune = action.payload;
+        likes = action.payload.likeCount;
+      }
+      return {
+        ...state,
+        tune: {
+          ...state.tune,
+          likeCount: likes
+        }
+      };
+    case DELETE_TUNE:
+      let index1 = state.tunes.findIndex(
+        tune => tune.tuneId === action.payload
+      );
+      state.tunes.splice(index1, 1);
+      return {
+        ...state
+      };
+    case POST_TUNE:
+      return {
+        ...state,
+        tunes: [action.payload, ...state.tunes]
+      };
+    case SUBMIT_COMMENT:
+      state.tune = {
+        ...state.tune,
+        comments: [action.payload, ...state.tune.comments]
+      };
+      return {
+        ...state
+        // tune: {
+        //   ...state.tune,
+        //   // comments: [action.payload, ...state.tune.comments]
+        // }
       };
     default:
       return state;

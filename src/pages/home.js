@@ -1,28 +1,22 @@
 import React, { Component } from "react";
-import axios from "axios";
 import Grid from "@material-ui/core/Grid";
+import PropTypes from "prop-types";
 
-import Tune from "../components/Tune";
-import Profile from "../components/Profile";
+import Tune from "../components/tune/Tune";
+import Profile from "../components/profile/Profile";
+
+import { connect } from "react-redux";
+import { getTunes } from "../redux/actions/dataActions";
 
 class home extends Component {
-  state = {
-    tunes: null
-  };
   componentDidMount() {
-    axios
-      .get("/tunes")
-      .then(res => {
-        // console.log(res.data);
-        this.setState({
-          tunes: res.data
-        });
-      })
-      .catch(err => console.error(err));
+    this.props.getTunes();
   }
   render() {
-    let recentTunes = this.state.tunes ? (
-      this.state.tunes.map(tune => <Tune key={tune.tuneId} tune={tune} />)
+    const { tunes, loading } = this.props.data;
+    console.log("home ", this.props);
+    let recentTunes = !loading ? (
+      tunes.map(tune => <Tune key={tune.tuneId} tune={tune} />)
     ) : (
       <p>Loading...</p>
     );
@@ -39,4 +33,13 @@ class home extends Component {
   }
 }
 
-export default home;
+home.propTypes = {
+  getTunes: PropTypes.func.isRequired,
+  data: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  data: state.data
+});
+
+export default connect(mapStateToProps, { getTunes })(home);
