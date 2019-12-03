@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import Tune from "../components/tune/Tune";
 import Profile from "../components/profile/Profile";
+import TuneSkeleton from "../util/TuneSkeleton";
 
 import { connect } from "react-redux";
 import { getTunes } from "../redux/actions/dataActions";
@@ -17,7 +18,7 @@ class home extends Component {
     let recentTunes = !loading ? (
       tunes.map(tune => <Tune key={tune.tuneId} tune={tune} />)
     ) : (
-      <p>Loading...</p>
+      <TuneSkeleton />
     );
     return (
       <Grid container>

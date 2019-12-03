@@ -58,7 +58,9 @@ const styles = theme => ({
 
 class TuneDialog extends Component {
   state = {
-    open: false
+    open: false,
+    oldPath: "",
+    newPath: ""
   };
   componentDidMount() {
     if (this.props.openDialog) {
@@ -66,10 +68,20 @@ class TuneDialog extends Component {
     }
   }
   handleOpen = () => {
-    this.setState({ open: true });
+    let oldPath = window.location.pathname;
+
+    const { userName, tuneId } = this.props;
+    const newPath = `/users/${userName}/tune/${tuneId}`;
+
+    if (oldPath === newPath) oldPath = `/users/${userName}`;
+
+    window.history.pushState(null, null, newPath);
+
+    this.setState({ open: true, oldPath, newPath });
     this.props.getTune(this.props.tuneId);
   };
   handleClose = () => {
+    window.history.pushState(null, null, this.state.oldPath);
     console.log("clear!!!");
     this.setState({ open: false });
     this.props.clearErrors();

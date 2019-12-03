@@ -85,7 +85,11 @@ export class Tune extends Component {
             <ChatIcon color="primary" />
           </MyButton>
           <span>{commentCount} comments</span>
-          <TuneDialog tuneId={tuneId} userName={userName} />
+          <TuneDialog
+            tuneId={tuneId}
+            userName={userName}
+            openDialog={this.props.openDialog}
+          />
         </CardContent>
       </Card>
     );
@@ -95,7 +99,8 @@ export class Tune extends Component {
 Tune.propTypes = {
   user: PropTypes.object.isRequired,
   tune: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  openDialog: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

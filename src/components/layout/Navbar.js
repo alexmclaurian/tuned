@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import MyButton from "../../util/MyButton";
 import PostTune from "../tune/PostTune";
+import Notifications from "./Notifications";
 // MUI stuff
 import AppBar from "@material-ui/core/AppBar";
 import ToolBar from "@material-ui/core/ToolBar";
@@ -11,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 // Icons
 import HomeIcon from "@material-ui/icons/Home";
-import Notifications from "@material-ui/icons/Notifications";
+// import Notifications from "@material-ui/icons/Notifications";
 
 export class Navbar extends Component {
   render() {
@@ -27,9 +28,7 @@ export class Navbar extends Component {
                   <HomeIcon />
                 </MyButton>
               </Link>
-              <MyButton tip="Notifications">
-                <Notifications />
-              </MyButton>
+              <Notifications />
             </Fragment>
           ) : (
             <Fragment>

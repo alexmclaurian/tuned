@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import Tune from "../components/tune/Tune";
-// import withStyles from "@material-ui/core/styles/withStyles";
+import TuneSkeleton from "../util/TuneSkeleton";
+import ProfileSkeleton from "../util/ProfileSkeleton";
 import StaticProfile from "../components/profile/StaticProfile";
 import Grid from "@material-ui/core/Grid";
 
@@ -31,9 +32,8 @@ class user extends Component {
   render() {
     const { tunes, loading } = this.props.data;
     const { tuneIdParam } = this.state;
-    // console.log("user ", this.props);
     const tunesMarkup = loading ? (
-      <p>loading data...</p>
+      <TuneSkeleton />
     ) : tunes === null ? (
       <p>No tunes from this user</p>
     ) : !tuneIdParam ? (
@@ -53,7 +53,7 @@ class user extends Component {
         </Grid>
         <Grid item sm={4} xs={12}>
           {this.state.profile === null ? (
-            <p>Loading profile...</p>
+            <ProfileSkeleton />
           ) : (
             <StaticProfile profile={this.state.profile} />
           )}
