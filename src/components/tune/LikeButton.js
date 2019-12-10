@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import MyButton from "../../util/MyButton";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
@@ -9,46 +9,45 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 import { connect } from "react-redux";
 import { getTune, likeTune, unlikeTune } from "../../redux/actions/dataActions";
 
-export class LikeButton extends Component {
-  likedTune = () => {
+const LikeButton = props => {
+  const likedTune = () => {
     if (
-      this.props.user.likes &&
-      this.props.user.likes.find(like => like.tuneId === this.props.tuneId)
+      props.user.likes &&
+      props.user.likes.find(like => like.tuneId === props.tuneId)
     ) {
       return true;
     } else {
       return false;
     }
   };
-  likeTune = () => {
-    this.props.getTune(this.props.tuneId);
-    this.props.likeTune(this.props.tuneId);
+  const likeTune = () => {
+    props.getTune(props.tuneId);
+    props.likeTune(props.tuneId);
   };
-  unlikeTune = () => {
-    this.props.getTune(this.props.tuneId);
-    this.props.unlikeTune(this.props.tuneId);
+  const unlikeTune = () => {
+    props.getTune(props.tuneId);
+    props.unlikeTune(props.tuneId);
   };
-  render() {
-    const { authenticated } = this.props.user;
-    const likeButton = !authenticated ? (
-      <Link to="/login">
-        <MyButton tip="Like">
-          <FavoriteBorder color="primary" />
-        </MyButton>
-      </Link>
-    ) : this.likedTune() ? (
-      <MyButton tip="Undo like" onClick={this.unlikeTune}>
-        <FavoriteIcon color="primary" />
-      </MyButton>
-    ) : (
-      <MyButton tip="Like" onClick={this.likeTune}>
+
+  const { authenticated } = props.user;
+  const likeButton = !authenticated ? (
+    <Link to="/login">
+      <MyButton tip="Like">
         <FavoriteBorder color="primary" />
       </MyButton>
-    );
+    </Link>
+  ) : likedTune() ? (
+    <MyButton tip="Undo like" onClick={unlikeTune}>
+      <FavoriteIcon color="primary" />
+    </MyButton>
+  ) : (
+    <MyButton tip="Like" onClick={likeTune}>
+      <FavoriteBorder color="primary" />
+    </MyButton>
+  );
 
-    return likeButton;
-  }
-}
+  return likeButton;
+};
 
 LikeButton.propTypes = {
   user: PropTypes.object.isRequired,

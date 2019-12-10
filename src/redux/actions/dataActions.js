@@ -14,7 +14,7 @@ import {
 } from "../types";
 import axios from "axios";
 
-// Get all tune
+// Get all tunes
 export const getTunes = () => dispatch => {
   dispatch({ type: LOADING_DATA });
   axios

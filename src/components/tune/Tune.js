@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
@@ -15,7 +15,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 // Icons
 import ChatIcon from "@material-ui/icons/Chat";
-
 // Redux
 import { connect } from "react-redux";
 
@@ -34,67 +33,64 @@ const styles = {
   }
 };
 
-export class Tune extends Component {
-  render() {
-    dayjs.extend(relativeTime);
-    // console.log("tune props ", this.props);
-    const {
-      classes,
-      tune: {
-        body,
-        createdAt,
-        userImage,
-        userName,
-        tuneId,
-        likeCount,
-        commentCount
-      },
-      user: { authenticated, credentials }
-    } = this.props;
+const Tune = props => {
+  dayjs.extend(relativeTime);
+  const {
+    classes,
+    tune: {
+      body,
+      createdAt,
+      userImage,
+      userName,
+      tuneId,
+      likeCount,
+      commentCount
+    },
+    user: { authenticated, credentials }
+  } = props;
 
-    const deleteButton =
-      authenticated && userName === credentials.userName ? (
-        <DeleteTune tuneId={tuneId} />
-      ) : null;
+  const deleteButton =
+    authenticated && userName === credentials.userName ? (
+      <DeleteTune tuneId={tuneId} />
+    ) : null;
 
-    return (
-      <Card className={classes.card}>
-        <CardMedia
-          image={userImage}
-          title="Profile Image"
-          className={classes.image}
+  return (
+    <Card className={classes.card}>
+      <CardMedia
+        image={userImage}
+        title="Profile Image"
+        className={classes.image}
+      />
+
+      <CardContent className={classes.content}>
+        <Typography
+          variant="h5"
+          component={Link}
+          to={`/users/${userName}`}
+          color="primary"
+        >
+          {userName}
+        </Typography>
+        {deleteButton}
+        <Typography variant="body2" color="textSecondary">
+          {dayjs(createdAt).fromNow()}
+        </Typography>
+        <Typography variant="body1">{body}</Typography>
+        <LikeButton tuneId={tuneId} />
+        <span>{likeCount} Likes</span>
+        <MyButton tip="comments">
+          <ChatIcon color="primary" />
+        </MyButton>
+        <span>{commentCount} comments</span>
+        <TuneDialog
+          tuneId={tuneId}
+          userName={userName}
+          openDialog={props.openDialog}
         />
-
-        <CardContent className={classes.content}>
-          <Typography
-            variant="h5"
-            component={Link}
-            to={`/users/${userName}`}
-            color="primary"
-          >
-            {userName}
-          </Typography>
-          {deleteButton}
-          <Typography variant="body2" color="textSecondary">
-            {dayjs(createdAt).fromNow()}
-          </Typography>
-          <Typography variant="body1">{body}</Typography>
-          <LikeButton tuneId={tuneId} />
-          <span>{likeCount} Likes</span>
-          <MyButton tip="comments">
-            <ChatIcon color="primary" />
-          </MyButton>
-          <span>{commentCount} comments</span>
-          <TuneDialog
-            tuneId={tuneId}
-            userName={userName}
-            openDialog={this.props.openDialog}
-          />
-        </CardContent>
-      </Card>
-    );
-  }
-}
+      </CardContent>
+    </Card>
+  );
+};
 
 Tune.propTypes = {
   user: PropTypes.object.isRequired,

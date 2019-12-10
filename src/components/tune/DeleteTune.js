@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from "prop-types";
 import MyButton from "../../util/MyButton";
@@ -20,51 +20,43 @@ const styles = {
   }
 };
 
-class DeleteTune extends Component {
-  state = {
-    open: false
+const DeleteTune = props => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
   };
-  handleOpen = () => {
-    this.setState({ open: true });
+  const handleClose = () => {
+    setOpen(false);
   };
-  handleClose = () => {
-    this.setState({ open: false });
+  const deleteTune = () => {
+    props.deleteTune(props.tuneId);
+    setOpen(false);
   };
-  deleteTune = () => {
-    this.props.deleteTune(this.props.tuneId);
-    this.setState({ open: false });
-  };
-  render() {
-    const { classes } = this.props;
-    return (
-      <Fragment>
-        <MyButton
-          tip="Delete tune"
-          onClick={this.handleOpen}
-          btnClassName={classes.deleteButton}
-        >
-          <DeleteOutline color="secondary" />
-        </MyButton>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          fullWidth
-          maxWidth="sm"
-        >
-          <DialogTitle>Are you sure you want to delete this tune?</DialogTitle>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.deleteTune} color="secondary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Fragment>
-    );
-  }
-}
+
+  const { classes } = props;
+  return (
+    <Fragment>
+      <MyButton
+        tip="Delete tune"
+        onClick={handleOpen}
+        btnClassName={classes.deleteButton}
+      >
+        <DeleteOutline color="secondary" />
+      </MyButton>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogTitle>Are you sure you want to delete this tune?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={deleteTune} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Fragment>
+  );
+};
 
 DeleteTune.propTypes = {
   deleteTune: PropTypes.func.isRequired,
