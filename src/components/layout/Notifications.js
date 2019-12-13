@@ -53,7 +53,8 @@ const Notifications = props => {
   } else {
     notificationsIcon = <NotificationsIcon />;
   }
-  let notificationsMarkup =
+
+  const notificationsMarkup =
     notifications && notifications.length > 0 ? (
       notifications.map(not => {
         const verb = not.type === "like" ? "liked" : "commented on";

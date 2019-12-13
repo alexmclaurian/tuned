@@ -161,9 +161,7 @@ class TuneDialog extends Component {
           >
             <CloseIcon />
           </MyButton>
-          <DialogContent className={classes.dialogContent}>
-            {dialogMarkup}
-          </DialogContent>
+          <DialogContent>{dialogMarkup}</DialogContent>
         </Dialog>
       </Fragment>
     );

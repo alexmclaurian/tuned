@@ -41,7 +41,6 @@ export default function(state = initialState, action) {
       state.tunes[index] = action.payload;
       let likes = state.tune.likeCount;
       if (state.tune.tuneId === action.payload.tuneId) {
-        // state.tune = action.payload;
         likes = action.payload.likeCount;
       }
       return {

@@ -12,6 +12,7 @@ import Button from "@material-ui/core/Button";
 import { connect } from "react-redux";
 // Icons
 import HomeIcon from "@material-ui/icons/Home";
+import AudiotrackIcon from "@material-ui/icons/Audiotrack";
 
 const Navbar = props => {
   const authenticated = props.authenticated;
@@ -27,6 +28,11 @@ const Navbar = props => {
               </MyButton>
             </Link>
             <Notifications />
+            <Link to={`/projects/${props.userName}`}>
+              <MyButton tip="Projects">
+                <AudiotrackIcon />
+              </MyButton>
+            </Link>
           </Fragment>
         ) : (
           <Fragment>
@@ -38,6 +44,9 @@ const Navbar = props => {
             </Button>
             <Button color="inherit" component={Link} to="/login">
               Login
+            </Button>
+            <Button color="inherit" component={Link} to="/projects">
+              Projects
             </Button>
           </Fragment>
         )}
@@ -51,7 +60,8 @@ Navbar.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  authenticated: state.user.authenticated
+  authenticated: state.user.authenticated,
+  userName: state.user.userName
 });
 
 export default connect(mapStateToProps)(Navbar);

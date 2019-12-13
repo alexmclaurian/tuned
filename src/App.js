@@ -19,6 +19,7 @@ import home from "./pages/home";
 import login from "./pages/login";
 import signup from "./pages/signup";
 import user from "./pages/user";
+import projects from "./pages/projects";
 
 import blue from "@material-ui/core/colors/blue";
 import deepPurple from "@material-ui/core/colors/deepPurple";
@@ -29,6 +30,9 @@ const theme = createMuiTheme({
     secondary: deepPurple
   }
 });
+
+axios.defaults.baseURL =
+  "https://us-central1-tunedmusic-cad28.cloudfunctions.net/api";
 
 const token = localStorage.FBIdToken;
 
@@ -56,6 +60,7 @@ function App() {
                 <Route exact path="/" component={home} />
                 <AuthRoute exact path="/login" component={login} />
                 <AuthRoute exact path="/signup" component={signup} />
+                <Route exact path="/projects/:userName" component={projects} />
                 <Route exact path="/users/:userName" component={user} />
                 <Route
                   exact

@@ -1,7 +1,5 @@
 import {
   SET_USER,
-  // SET_ERRORS,
-  // CLEAR_ERRORS,
   LOADING_USER,
   SET_AUTHENTICATED,
   SET_UNAUTHENTICATED,
@@ -15,7 +13,8 @@ const initialState = {
   authenticated: false,
   credentials: {},
   likes: [],
-  notifications: []
+  notifications: [],
+  userName: ""
 };
 export default function(state = initialState, action) {
   switch (action.type) {
@@ -27,7 +26,9 @@ export default function(state = initialState, action) {
     case SET_UNAUTHENTICATED:
       return initialState;
     case SET_USER:
+      // console.log("payload ", );
       return {
+        userName: action.payload.credentials.userName,
         authenticated: true,
         loading: false,
         ...action.payload
