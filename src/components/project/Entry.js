@@ -2,7 +2,7 @@ import React from "react";
 import _ from "lodash";
 // MUI
 // import Grid from "@material-ui/core/Grid";
-// import Typography from "@material-ui/core/Typography";
+import Typography from "@material-ui/core/Typography";
 // Piano
 import { KeyboardShortcuts, MidiNumbers } from "react-piano";
 import "react-piano/dist/styles.css";
@@ -116,7 +116,7 @@ class Entry extends React.Component {
     const notes = mapped.map((event, i) => <div key={i}>{event}</div>);
     return (
       <div>
-        <h1 className="h3">react-piano recording + playback demo</h1>
+        <Typography variant="h2">Play Piano</Typography>
         <div className="mt-5">
           <SoundfontProvider
             instrumentName="acoustic_grand_piano"
