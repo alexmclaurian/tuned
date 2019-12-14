@@ -11,21 +11,49 @@ class PianoWithRecording extends React.Component {
 
   state = {
     keysDown: {},
-    noteDuration: DEFAULT_NOTE_DURATION
+    noteDuration: DEFAULT_NOTE_DURATION,
+    clock: 0,
+    clock1: 0,
+    started: false,
+    done: false,
+    midiNum: {}
   };
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.done && this.state.done) {
+      console.log(prevState, this.state);
+      this.recordNotes(
+        this.state.midiNum,
+        Math.round(this.state.clock1 - this.state.clock) / 1000
+      );
+      // this.recordNotes(
+      //   this.state.midiNumbers,
+      //   this.state.clock1 - this.state.clock
+      // );
+      this.setState({ done: false });
+    }
+  }
+
   onPlayNoteInput = midiNumber => {
-    this.setState({
-      notesRecorded: false
-    });
+    if (!this.state.started) {
+      this.setState({
+        notesRecorded: false,
+        clock: performance.now(),
+        started: true
+      });
+    }
   };
 
   onStopNoteInput = (midiNumber, { prevActiveNotes }) => {
     if (this.state.notesRecorded === false) {
-      this.recordNotes(prevActiveNotes, this.state.noteDuration);
+      // this.recordNotes(prevActiveNotes, this.state.noteDuration);
       this.setState({
         notesRecorded: true,
-        noteDuration: DEFAULT_NOTE_DURATION
+        noteDuration: DEFAULT_NOTE_DURATION,
+        clock1: performance.now(),
+        started: false,
+        done: true,
+        midiNum: prevActiveNotes
       });
     }
   };
@@ -46,7 +74,7 @@ class PianoWithRecording extends React.Component {
       "B"
     ];
     var noteOctaves = [];
-    const ok = midiNumbers.map(num => {
+    midiNumbers.map(num => {
       const octave = parseInt(num / 12 - 1);
       const noteIndex = num % 12;
       const note = noteString[noteIndex];
@@ -57,22 +85,27 @@ class PianoWithRecording extends React.Component {
     if (this.props.recording.mode !== "RECORDING") {
       return;
     }
-    // console.log(noteOctaves);
-    const newEvents = midiNumbers.map((midiNumber, i) => {
-      const note = noteOctaves[i];
+    const newEvents = midiNumbers.map(midiNumber => {
+      // console.log(this.props.recording);
       return {
-        note,
         midiNumber,
         time: this.props.recording.currentTime,
+        // time: this.state.clock1,
+        // duration: Math.round(this.state.clock1 - this.state.clock) / 1000
         duration: duration
       };
     });
-    // newEvents.push(noteOctaves);
-    // console.log("new ", newEvents);
+    // console.log(
+    //   this.props.recording,
+    //   duration,
+    //   this.state.clock,
+    //   this.state.clock1
+    // );
     this.props.setRecording({
       allNotes: this.props.recording.allNotes.concat([noteOctaves]),
       events: this.props.recording.events.concat(newEvents),
       currentTime: this.props.recording.currentTime + duration
+      // totalTime: this.state.clock1 - this.state.clock
     });
   };
 
@@ -84,7 +117,6 @@ class PianoWithRecording extends React.Component {
       setRecording,
       ...pianoProps
     } = this.props;
-    // console.log(this.props.recording.events);
 
     const { mode, currentEvents } = this.props.recording;
     const activeNotes =

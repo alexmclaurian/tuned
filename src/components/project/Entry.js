@@ -1,8 +1,10 @@
 import React from "react";
 import _ from "lodash";
 // MUI
-// import Grid from "@material-ui/core/Grid";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
+import Tooltip from "@material-ui/core/Tooltip";
 // Piano
 import { KeyboardShortcuts, MidiNumbers } from "react-piano";
 import "react-piano/dist/styles.css";
@@ -10,6 +12,10 @@ import "react-piano/dist/styles.css";
 // import DimensionsProvider from "../../util/piano/DimensionsProvider";
 import SoundfontProvider from "../../util/piano/SoundfontProvider";
 import PianoWithRecording from "../../util/piano/PianoWithRecording";
+// icons
+import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
+import StopRoundedIcon from "@material-ui/icons/StopRounded";
+import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
 
 // webkitAudioContext fallback needed to support Safari
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -17,7 +23,7 @@ const soundfontHostname = "https://d1pzp51pvbm36p.cloudfront.net";
 
 const noteRange = {
   first: MidiNumbers.fromNote("c3"),
-  last: MidiNumbers.fromNote("f4")
+  last: MidiNumbers.fromNote("f5")
 };
 const keyboardShortcuts = KeyboardShortcuts.create({
   firstNote: noteRange.first,
@@ -32,6 +38,7 @@ class Entry extends React.Component {
       events: [],
       allNotes: [],
       currentTime: 0,
+      // totalTime: 0,
       currentEvents: []
     }
   };
@@ -52,7 +59,6 @@ class Entry extends React.Component {
   };
 
   setRecording = value => {
-    // console.log(value.allNotes);
     this.setState({
       recording: Object.assign({}, this.state.recording, value)
     });
@@ -110,14 +116,15 @@ class Entry extends React.Component {
   render() {
     const tell = this.state.recording.allNotes;
     const evts = this.state.recording.events;
+    const times = this.state.recording;
     const mapped = tell.map(notes => notes.toString());
-
-    console.log(mapped);
     const notes = mapped.map((event, i) => <div key={i}>{event}</div>);
+    // console.log(evts);
+    // console.log(Math.round(times.totalTime) / 1000);
     return (
-      <div>
-        <Typography variant="h2">Play Piano</Typography>
-        <div className="mt-5">
+      <Grid container>
+        <Grid item sm={8} xs={12}>
+          <Typography variant="h2">Play Piano</Typography>
           <SoundfontProvider
             instrumentName="acoustic_grand_piano"
             audioContext={audioContext}
@@ -135,20 +142,41 @@ class Entry extends React.Component {
               />
             )}
           />
-        </div>
-        <div className="mt-5">
-          <button onClick={this.onClickPlay}>Play</button>
-          <button onClick={this.onClickStop}>Stop</button>
-          <button onClick={this.onClickClear}>Clear</button>
-        </div>
-        <div className="mt-5">
+        </Grid>
+        <Grid item sm={8} xs={12}>
+          <Tooltip title="Play">
+            <Button
+              aria-label="Play"
+              color="primary"
+              onClick={this.onClickPlay}
+            >
+              <PlayArrowRoundedIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Stop">
+            <Button
+              aria-label="Stop"
+              color="primary"
+              onClick={this.onClickStop}
+            >
+              <StopRoundedIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Clear">
+            <Button
+              aria-label="Clear"
+              color="primary"
+              onClick={this.onClickClear}
+            >
+              <ClearRoundedIcon />
+            </Button>
+          </Tooltip>
+        </Grid>
+        <Grid item sm={8} xs={12}>
           <strong>Recorded notes</strong>
-          {/* <div>{JSON.stringify(this.state.recording.events)}</div> */}
-          {/* <div>{this.state.recording.events}</div> */}
-          {/* {tell} */}
           {notes}
-        </div>
-      </div>
+        </Grid>
+      </Grid>
     );
   }
 }
