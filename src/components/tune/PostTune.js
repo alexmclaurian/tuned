@@ -11,6 +11,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
+import Typography from "@material-ui/core/Typography";
 // Redux
 import { connect } from "react-redux";
 import { postTune, clearErrors } from "../../redux/actions/dataActions";
@@ -69,7 +70,7 @@ class PostTune extends Component {
     } = this.props;
     return (
       <Fragment>
-        <MyButton onClick={this.handleOpen} tip="Post a tune">
+        <MyButton onClick={this.handleOpen} tip="Post a tune" name="Post">
           <AddIcon color="primary" />
         </MyButton>
         <Dialog

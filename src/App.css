@@ -10,10 +10,17 @@ body {
   max-width: 1200px;
 }
 .nav-container {
-  margin: auto;
+  /* margin: auto; */
 }
 .nav-container svg {
   color: #fff;
+}
+.tuned {
+  /* margin: 20px auto; */
+  /* vertical-align: auto; */
+  /* vertical-align: bottom; */
+  display: inline-flex;
+  /* left: 10%; */
 }
 a {
   text-decoration: none;

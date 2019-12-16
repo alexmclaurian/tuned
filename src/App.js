@@ -23,11 +23,12 @@ import projects from "./pages/projects";
 
 import blue from "@material-ui/core/colors/blue";
 import deepPurple from "@material-ui/core/colors/deepPurple";
+import second from "@material-ui/core/colors/yellow";
 
 const theme = createMuiTheme({
   palette: {
     primary: blue,
-    secondary: deepPurple
+    secondary: second
   }
 });
 

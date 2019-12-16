@@ -91,6 +91,9 @@ const Notifications = props => {
           onClick={handleOpen}
         >
           {notificationsIcon}
+          <Typography color="secondary" variant="h6">
+            Noti
+          </Typography>
         </IconButton>
       </Tooltip>
       <Menu
