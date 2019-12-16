@@ -14,6 +14,11 @@ import {
 } from "../types";
 import axios from "axios";
 
+// Post midi
+export const postMidi = midi => dispatch => {
+  console.log("axios call...", midi);
+};
+
 // Get all tunes
 export const getTunes = () => dispatch => {
   dispatch({ type: LOADING_DATA });

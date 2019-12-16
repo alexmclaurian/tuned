@@ -1,5 +1,6 @@
 import React from "react";
 import _ from "lodash";
+import MidiWriter from "midi-writer-js";
 // MUI
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +17,9 @@ import PianoWithRecording from "../../util/piano/PianoWithRecording";
 import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
+// redux
+import { connect } from "react-redux";
+import { postMidi } from "../../redux/actions/dataActions";
 
 // webkitAudioContext fallback needed to support Safari
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -38,8 +42,8 @@ class Entry extends React.Component {
       events: [],
       allNotes: [],
       currentTime: 0,
-      // totalTime: 0,
       currentEvents: []
+      // totalTime: 0,
     }
   };
 
@@ -86,6 +90,28 @@ class Entry extends React.Component {
         }, time * 1000)
       );
     });
+
+    const track = new MidiWriter.Track();
+    this.state.recording.events.forEach(evt => {
+      // create midi track
+      track.addEvent(
+        [
+          new MidiWriter.NoteEvent({
+            pitch: [evt.noteOctave],
+            // duration: evt.duration.toString()
+            duration: "1"
+          })
+        ],
+        (evt, idx) => ({
+          sequential: true
+        })
+      );
+      // write midi track
+    });
+    var write = new MidiWriter.Writer(track);
+    // Finished midi file
+    this.props.postMidi(write.dataUri());
+
     // Stop at the end
     setTimeout(() => {
       this.onClickStop();
@@ -115,12 +141,10 @@ class Entry extends React.Component {
 
   render() {
     const tell = this.state.recording.allNotes;
-    const evts = this.state.recording.events;
-    const times = this.state.recording;
+    // const evts = this.state.recording.events;
+    // const times = this.state.recording;
     const mapped = tell.map(notes => notes.toString());
     const notes = mapped.map((event, i) => <div key={i}>{event}</div>);
-    // console.log(evts);
-    // console.log(Math.round(times.totalTime) / 1000);
     return (
       <Grid container>
         <Grid item sm={8} xs={12}>
@@ -181,4 +205,6 @@ class Entry extends React.Component {
   }
 }
 
-export default Entry;
+const mapStateToProps = state => ({});
+
+export default connect(mapStateToProps, { postMidi })(Entry);

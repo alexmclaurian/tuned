@@ -21,7 +21,13 @@ class PianoWithRecording extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.done && this.state.done) {
-      console.log(prevState, this.state);
+      console.log(
+        prevState.clock,
+        prevState.clock1,
+        this.state.clock,
+        this.state.clock1
+      );
+
       this.recordNotes(
         this.state.midiNum,
         Math.round(this.state.clock1 - this.state.clock) / 1000
@@ -58,6 +64,7 @@ class PianoWithRecording extends React.Component {
     }
   };
 
+  // midiNumbers: midi number for keys pressed. duration: how long keys were pressed
   recordNotes = (midiNumbers, duration) => {
     const noteString = [
       "C",
@@ -74,20 +81,26 @@ class PianoWithRecording extends React.Component {
       "B"
     ];
     var noteOctaves = [];
-    midiNumbers.map(num => {
-      const octave = parseInt(num / 12 - 1);
-      const noteIndex = num % 12;
-      const note = noteString[noteIndex];
-      const noteOctave = note + octave;
-      noteOctaves.push(noteOctave);
-    });
+    // midiNumbers.map(num => {
+    //   const octave = parseInt(num / 12 - 1);
+    //   const noteIndex = num % 12;
+    //   const note = noteString[noteIndex];
+    //   const noteOctave = note + octave;
+    //   noteOctaves.push(noteOctave);
+    // });
 
     if (this.props.recording.mode !== "RECORDING") {
       return;
     }
     const newEvents = midiNumbers.map(midiNumber => {
-      // console.log(this.props.recording);
+      // console.log(duration);
+      const octave = parseInt(midiNumber / 12 - 1);
+      const noteIndex = midiNumber % 12;
+      const note = noteString[noteIndex];
+      const noteOctave = note + octave;
+      noteOctaves.push(noteOctave);
       return {
+        noteOctave,
         midiNumber,
         time: this.props.recording.currentTime,
         // time: this.state.clock1,
@@ -95,12 +108,6 @@ class PianoWithRecording extends React.Component {
         duration: duration
       };
     });
-    // console.log(
-    //   this.props.recording,
-    //   duration,
-    //   this.state.clock,
-    //   this.state.clock1
-    // );
     this.props.setRecording({
       allNotes: this.props.recording.allNotes.concat([noteOctaves]),
       events: this.props.recording.events.concat(newEvents),

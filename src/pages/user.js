@@ -13,21 +13,26 @@ import { getUserData } from "../redux/actions/dataActions";
 const User = props => {
   const [profile, setProfile] = useState(null);
   const [tuneIdParam, setTuneIdParam] = useState(null);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    const userName = props.match.params.userName;
-    const tuneId = props.match.params.tuneId;
+    // match.params are dynamic URL params
+    if (!loaded) {
+      setLoaded(true);
+      const userName = props.match.params.userName;
+      const tuneId = props.match.params.tuneId;
 
-    if (tuneId) setTuneIdParam(tuneId);
+      if (tuneId) setTuneIdParam(tuneId);
 
-    props.getUserData(userName);
-    axios
-      .get(`/user/${userName}`)
-      .then(res => {
-        setProfile(res.data.user);
-      })
-      .catch(err => console.log("not working.. ", props.match, err));
-  }, []);
+      props.getUserData(userName);
+      axios
+        .get(`/user/${userName}`)
+        .then(res => {
+          setProfile(res.data.user);
+        })
+        .catch(err => console.log("not working.. ", props.match, err));
+    }
+  }, [loaded, props]);
 
   const { tunes, loading } = props.data;
   const tunesMarkup = loading ? (
