@@ -11,7 +11,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import AddIcon from "@material-ui/icons/Add";
 import CloseIcon from "@material-ui/icons/Close";
-import Typography from "@material-ui/core/Typography";
 // Redux
 import { connect } from "react-redux";
 import { postTune, clearErrors } from "../../redux/actions/dataActions";
@@ -56,6 +55,7 @@ class PostTune extends Component {
     this.setState({ open: false, errors: {} });
   };
   handleChange = event => {
+    // dynamic key
     this.setState({ [event.target.name]: event.target.value });
   };
   handleSubmit = event => {

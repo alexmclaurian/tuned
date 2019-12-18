@@ -1,4 +1,5 @@
 import {
+  SET_MIDI,
   SET_TUNES,
   LIKE_TUNE,
   UNLIKE_TUNE,
@@ -21,6 +22,12 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case SET_MIDI:
+      console.log(`setmidi ${action.payload}`);
+      return {
+        ...state,
+        midi: action.payload
       };
     case SET_TUNES:
       return {
@@ -70,10 +77,6 @@ export default function(state = initialState, action) {
       };
       return {
         ...state
-        // tune: {
-        //   ...state.tune,
-        //   // comments: [action.payload, ...state.tune.comments]
-        // }
       };
     default:
       return state;

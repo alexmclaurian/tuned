@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 // Icons
 import HomeIcon from "@material-ui/icons/Home";
 import AudiotrackIcon from "@material-ui/icons/Audiotrack";
-import { Typography } from "@material-ui/core";
 import RadioIcon from "@material-ui/icons/Radio";
 
 const Navbar = props => {
@@ -64,7 +63,7 @@ const Navbar = props => {
             <Button color="inherit" component={Link} to="/login">
               Login
             </Button>
-            <Button color="inherit" component={Link} to="/projects">
+            <Button color="inherit" component={Link} to={`/projects/guest`}>
               Projects
             </Button>
           </Fragment>

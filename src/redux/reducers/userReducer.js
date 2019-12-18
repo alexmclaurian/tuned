@@ -26,7 +26,6 @@ export default function(state = initialState, action) {
     case SET_UNAUTHENTICATED:
       return initialState;
     case SET_USER:
-      // console.log("payload ", );
       return {
         userName: action.payload.credentials.userName,
         authenticated: true,

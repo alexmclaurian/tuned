@@ -11,6 +11,7 @@ export const STOP_LOADING_UI = "STOP_LOADING_UI";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
 export const LOADING_DATA = "LOADING_DATA";
 // Data reducer types
+export const SET_MIDI = "SET_MIDI";
 export const SET_TUNES = "SET_TUNES";
 export const SET_TUNE = "SET_TUNE";
 export const LIKE_TUNE = "LIKE_TUNE";

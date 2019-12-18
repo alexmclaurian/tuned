@@ -1,4 +1,5 @@
 import {
+  SET_MIDI,
   SET_TUNES,
   LOADING_DATA,
   STOP_LOADING_UI,
@@ -15,8 +16,20 @@ import {
 import axios from "axios";
 
 // Post midi
-export const postMidi = midi => dispatch => {
-  console.log("axios call...", midi);
+export const postMidi = formData => dispatch => {
+  for (var pair of formData.entries()) {
+    console.log(pair[0] + ", " + pair[1]);
+  }
+  const config = {
+    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+  };
+
+  axios.post("/midi", formData, config).then(res => {
+    dispatch({
+      type: SET_MIDI,
+      payload: res.data
+    });
+  });
 };
 
 // Get all tunes

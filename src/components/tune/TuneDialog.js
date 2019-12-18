@@ -82,12 +82,10 @@ class TuneDialog extends Component {
   };
   handleClose = () => {
     window.history.pushState(null, null, this.state.oldPath);
-    console.log("clear!!!");
     this.setState({ open: false });
     this.props.clearErrors();
   };
   render() {
-    // console.log("tune dialog ", this.props.tune.comments);
     const {
       classes,
       tune: {
