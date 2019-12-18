@@ -22,7 +22,6 @@ import user from "./pages/user";
 import projects from "./pages/projects";
 
 import blue from "@material-ui/core/colors/blue";
-import deepPurple from "@material-ui/core/colors/deepPurple";
 import second from "@material-ui/core/colors/yellow";
 
 const theme = createMuiTheme({
@@ -34,6 +33,7 @@ const theme = createMuiTheme({
 
 axios.defaults.baseURL =
   "https://us-central1-tunedmusic-cad28.cloudfunctions.net/api";
+// "http://localhost:5000/tunedmusic-cad28/us-central1/api/";
 
 const token = localStorage.FBIdToken;
 
@@ -41,7 +41,7 @@ if (token) {
   const decodedToken = jwtDecode(token);
   if (decodedToken.exp * 1000 < Date.now()) {
     store.dispatch(logoutUser());
-    window.location.href = "/login";
+    window.location.href = "/";
   } else {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common["Authorization"] = token;
@@ -68,6 +68,7 @@ function App() {
                   path="/users/:userName/tune/:tuneId"
                   component={user}
                 />
+                <Route component={home} />
               </Switch>
             </div>
           </Router>
