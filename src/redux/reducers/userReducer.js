@@ -28,6 +28,7 @@ export default function(state = initialState, action) {
     case SET_USER:
       return {
         userName: action.payload.credentials.userName,
+        midiFiles: action.payload.midifiles,
         authenticated: true,
         loading: false,
         ...action.payload

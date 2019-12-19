@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import _ from "lodash";
 import MidiWriter from "midi-writer-js";
 // MUI
@@ -175,8 +175,6 @@ class Entry extends React.Component {
 
   render() {
     const tell = this.state.recording.allNotes;
-    // const evts = this.state.recording.events;
-    // const times = this.state.recording;
     const mapped = tell.map(notes => notes.toString());
     const notes = mapped.map((event, i) => <div key={i}>{event}</div>);
     return (
@@ -240,6 +238,13 @@ class Entry extends React.Component {
           </Tooltip>
         </Grid>
         <Grid item sm={8} xs={12}>
+          <strong>Saved files</strong>
+          <Fragment>
+            {this.props.myMidis &&
+              this.props.myMidis.map((midi, idx) => <li key={idx}>{midi}</li>)}
+          </Fragment>
+        </Grid>
+        <Grid item sm={8} xs={12}>
           <strong>Recorded notes</strong>
           {notes}
         </Grid>
@@ -248,6 +253,8 @@ class Entry extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  myMidis: state.user.midiFiles
+});
 
 export default connect(mapStateToProps, { postMidi })(Entry);
