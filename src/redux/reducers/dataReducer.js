@@ -24,7 +24,6 @@ export default function(state = initialState, action) {
         loading: true
       };
     case SET_MIDI:
-      console.log(`setmidi ${action.payload}`);
       return {
         ...state,
         midi: action.payload

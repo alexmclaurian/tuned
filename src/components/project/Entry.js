@@ -17,6 +17,7 @@ import PianoWithRecording from "../../util/piano/PianoWithRecording";
 import PlayArrowRoundedIcon from "@material-ui/icons/PlayArrowRounded";
 import StopRoundedIcon from "@material-ui/icons/StopRounded";
 import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
+import SaveRoundedIcon from "@material-ui/icons/SaveRounded";
 // redux
 import { connect } from "react-redux";
 import { postMidi } from "../../redux/actions/dataActions";
@@ -113,6 +114,35 @@ class Entry extends React.Component {
         }, time * 1000)
       );
     });
+
+    // Stop at the end
+    setTimeout(() => {
+      this.onClickStop();
+    }, this.getRecordingEndTime() * 1000);
+  };
+
+  onClickStop = () => {
+    this.scheduledEvents.forEach(scheduledEvent => {
+      clearTimeout(scheduledEvent);
+    });
+    this.setRecording({
+      mode: "RECORDING",
+      currentEvents: []
+    });
+  };
+
+  onClickClear = () => {
+    this.onClickStop();
+    this.setRecording({
+      events: [],
+      mode: "RECORDING",
+      currentEvents: [],
+      currentTime: 0,
+      allNotes: []
+    });
+  };
+
+  onClickSaveMidi = () => {
     const track = new MidiWriter.Track();
     this.state.recording.events.forEach(evt => {
       // create midi track
@@ -140,32 +170,7 @@ class Entry extends React.Component {
     // datauri into blob for formdata and busboy
     formData.append("midi", blob);
     this.props.postMidi(formData);
-
-    // Stop at the end
-    setTimeout(() => {
-      this.onClickStop();
-    }, this.getRecordingEndTime() * 1000);
-  };
-
-  onClickStop = () => {
-    this.scheduledEvents.forEach(scheduledEvent => {
-      clearTimeout(scheduledEvent);
-    });
-    this.setRecording({
-      mode: "RECORDING",
-      currentEvents: []
-    });
-  };
-
-  onClickClear = () => {
-    this.onClickStop();
-    this.setRecording({
-      events: [],
-      mode: "RECORDING",
-      currentEvents: [],
-      currentTime: 0,
-      allNotes: []
-    });
+    alert("midi file saved");
   };
 
   render() {
@@ -222,6 +227,15 @@ class Entry extends React.Component {
               onClick={this.onClickClear}
             >
               <ClearRoundedIcon />
+            </Button>
+          </Tooltip>
+          <Tooltip title="Save">
+            <Button
+              aria-label="Save"
+              color="primary"
+              onClick={this.onClickSaveMidi}
+            >
+              <SaveRoundedIcon />
             </Button>
           </Tooltip>
         </Grid>
