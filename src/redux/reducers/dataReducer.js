@@ -1,5 +1,4 @@
 import {
-  SET_MIDI,
   SET_TUNES,
   LIKE_TUNE,
   UNLIKE_TUNE,
@@ -22,11 +21,6 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
-      };
-    case SET_MIDI:
-      return {
-        ...state,
-        midi: action.payload
       };
     case SET_TUNES:
       return {
